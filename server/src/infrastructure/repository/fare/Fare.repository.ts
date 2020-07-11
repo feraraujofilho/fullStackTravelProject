@@ -6,8 +6,4 @@ export class FareRepository extends Repository<FareEntity> {
   findOneById(fareId: number): Promise<FareEntity> {
     return this.findOne({ where: { id: fareId } })
   }
-
-  find(): any {
-      return this.find()
-  }
 }

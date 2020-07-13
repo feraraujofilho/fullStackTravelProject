@@ -11,17 +11,28 @@ export class FareService {
     private fareRepository: FareRepository,
   ) {}
 
-  async listAll(): Promise<FareEntity> {
-    return this.fareRepository.findOne({ where: { origin: "Berlin (alle)", destination: "London (alle)" }})
+  async listAll(): Promise<FareEntity[]> {
+    return this.fareRepository.find()
   }
 
-  async findManyFromRequest(requestFaresParametersDto: RequestFaresParametersDto):Promise<FareEntity[]>  {
-      const {origin, destination1, destination2, destination3, destination4, nights} = requestFaresParametersDto  
+//   async findManyFromRequest(requestFaresParametersDto: RequestFaresParametersDto):Promise<FareEntity[]>  {
+//       const {origin, destination1, destination2, destination3, destination4, nights} = requestFaresParametersDto  
 
-      return this.fareRepository.find({
+//       return this.fareRepository.find({
+//         where: [
+//           { origin, destination: destination1 },
+//           { origin: destination1, destination: origin }
+//         ]
+//       })
+//   }
+
+  getManyByMatch(origin: string, destination1: string, destination2: string): Promise<FareEntity[]> {
+    return this.fareRepository.find({
         where: [
           { origin, destination: destination1 },
-          { origin: destination1, destination: origin }
+          { origin: destination1, destination: origin },
+          { origin, destination: destination2 },
+          { origin: destination2, destination: origin }
         ]
       })
   }

@@ -1,0 +1,93 @@
+{
+	"extends": [
+		"airbnb",
+		"prettier",
+		"prettier/react",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"rules": {
+		//		https://eslint.org/docs/rules/padding-line-between-statements
+		"padding-line-between-statements": [
+			"error",
+			{
+				"blankLine": "always",
+				"prev": "block-like",
+				"next": "block-like"
+			},
+			{
+				"blankLine": "always",
+				"prev": "export",
+				"next": "export"
+			},
+			{
+				"blankLine": "always",
+				"prev": "block",
+				"next": "block"
+			}
+		],
+
+		"import/extensions": ["error", "never"],
+		//		"max-lines": ["error", {"max": 120, "skipBlankLines": false, "skipComments": true}], //future fun :S
+		"react-hooks/exhaustive-deps": "off",
+		"@typescript-eslint/explicit-function-return-type": [
+			"error",
+			{
+				"allowExpressions": true,
+				"allowTypedFunctionExpressions": true
+			}
+		],
+		"no-tabs": "off",
+		"beforeStatementContinuationChars": "never",
+		"indent": [
+			2,
+			"tab",
+			{
+				"SwitchCase": 1,
+				"VariableDeclarator": 1
+			}
+		],
+		"no-use-before-define": 0,
+		"no-console": 1,
+		// console logs will be removed from webpack on production run @TODO IT-12
+		"no-undef": 0,
+		"react/prop-types": 0,
+		"react/jsx-indent": [2, "tab"],
+		"react/jsx-props-no-spreading": 0,
+		"react/jsx-indent-props": [2, "tab"],
+		"react/jsx-filename-extension": [
+			1,
+			{
+				"extensions": [".js", ".jsx", ".tsx"]
+			}
+		],
+		"prettier/prettier": "error",
+		"no-unused-vars": "error",
+		"no-underscore-dangle": 0,
+		"import/prefer-default-export": 0,
+		"import/imports-first": ["error", "absolute-first"],
+		"import/newline-after-import": "error",
+		"@typescript-eslint/member-delimiter-style": [
+			"error",
+			{
+				"multiline": {
+					"delimiter": "none",
+					"requireLast": false
+				},
+				"singleline": {
+					"delimiter": "comma",
+					"requireLast": false
+				}
+			}
+		]
+	},
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [".js", ".jsx", ".ts", ".tsx"],
+				"moduleDirectory": ["node_modules", "src/", "scripts"]
+			}
+		}
+	},
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint", "prettier"]
+}

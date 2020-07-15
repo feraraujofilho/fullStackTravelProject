@@ -1,0 +1,9 @@
+type City {
+  id: Int!
+  name: String!
+  abb: String
+}
+
+type Query {
+  cities: [City]
+}

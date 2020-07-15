@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common'
+import { Controller, Get, Post, Body } from '@nestjs/common'
 import { FareService } from 'domain/service/fare/fare.service'
 import { FareEntity } from 'domain/model/fare/fare.entity'
 import { RequestFaresParametersDto } from 'infrastructure/controller/fare/dto/requestFaresParametersDto'
@@ -13,7 +13,7 @@ import { RequestFaresParametersDto } from 'infrastructure/controller/fare/dto/re
 export class FareController {
   constructor(
     private fareService: FareService,
-  ) {}
+  ) { }
 
   @Get()
   async findAllFares(): Promise<FareEntity[]> {
@@ -22,7 +22,7 @@ export class FareController {
 
 
   @Post()
-  async findMatchedFares(@Body() requestFaresParametersDto: RequestFaresParametersDto): Promise<FareEntity[]>{
+  async findMatchedFares(@Body() requestFaresParametersDto: RequestFaresParametersDto): Promise<FareEntity[]> {
     return this.fareService.findManyFromRequest(requestFaresParametersDto)
   }
 }

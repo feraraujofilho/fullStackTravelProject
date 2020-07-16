@@ -6,20 +6,13 @@ import { City } from './interfaces/City';
 import DropdownSelectCityProps from './DropdownSelectCityProps';
 import useStyles from './DropdownSelectCityStyles';
 
-const DropdownSelectCity: FC<DropdownSelectCityProps> = ({ label, handleInputChange, value }) => {
+const DropdownSelectCity: FC<DropdownSelectCityProps> = ({ label, handleInputChange, name, value }) => {
 	const classes = useStyles();
 
 	const { data } = useQuery(citiesQueries.Cities);
 
 	return (
-		<TextField
-			className={classes.root}
-			select
-			name={label}
-			label={label}
-			value={value}
-			onChange={handleInputChange}
-		>
+		<TextField className={classes.root} select name={name} label={label} value={value} onChange={handleInputChange}>
 			{data &&
 				data.cities.map((city: City) => {
 					return (

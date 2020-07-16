@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react'
 
 export interface NumberOfNightsDropdownProps {
-    quantity: string
+    quantity?: string | null
     onChange?: (e: ChangeEvent<{ value: unknown }>) => void
 }

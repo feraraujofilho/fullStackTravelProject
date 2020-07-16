@@ -28,7 +28,7 @@ const filterFlights = async (data, origin, destinations, nights): Promise<any[]>
 
   const filteredData = data.filter(value => destinations.includes(value.origin) || destinations.includes(value.destination))
 
-  while (today !== "2020-10-12") {
+  while (today !== "2020-12-31") {
     for (let i = 0; i < destinations.length; i++) {
       const roundTrip = filteredData.filter(flight => (flight.origin === origin && flight.destination === destinations[i] && flight.day.includes(today)) || (flight.origin === destinations[i] && flight.destination === origin && flight.day.includes(formatDate(addDays(new Date(today), nights)))))
       if (roundTrip.length === 2) {

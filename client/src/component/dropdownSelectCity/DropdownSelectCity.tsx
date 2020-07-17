@@ -13,6 +13,9 @@ const DropdownSelectCity: FC<DropdownSelectCityProps> = ({ label, handleInputCha
 
 	return (
 		<TextField className={classes.root} select name={name} label={label} value={value} onChange={handleInputChange}>
+			<MenuItem value="">
+				<em>None</em>
+			</MenuItem>
 			{data &&
 				data.cities.map((city: City) => {
 					return (

@@ -17,19 +17,17 @@ const SearchResults: FC = () => {
 	const destination4 = query.get('destination4');
 	const nights = query.get('nights');
 
-	const destinationsObject = { destination1, destination2, destination3, destination4 };
+	const destinationsObject = { destination1: destination1?.replace("(", " ("),
+	destination2: destination2?.replace("(", " ("),
+	destination3: destination3?.replace("(", " ("),
+	destination4: destination4?.replace("(", " ("), };
 
 	const tableData = get(state, 'data', null);
 
 	return (
 		<div>
 			<SearchBox
-				origin={origin}
-				destination1={destination1}
-				destination2={destination2}
-				destination3={destination3}
-				destination4={destination4}
-				nights={nights}
+				searchInfo={{ origin: origin?.replace("(", " ("), nights, ...destinationsObject }}
 			/>
 			<FlightsTable data={tableData || []} headers={destinationsObject} />
 		</div>

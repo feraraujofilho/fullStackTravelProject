@@ -2,8 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import AppRouter from './app/routing/AppRouter';
+/* import 'react-tabulator/lib/css/tabulator.min.css' */
+/* import 'react-tabulator/lib/styles.css' */
+import "./app/themes/style.scss"
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { CssBaseline } from '@material-ui/core';
 
 const client = new ApolloClient({
 	uri: 'http://localhost:4000/graphql',
@@ -13,6 +17,7 @@ const client = new ApolloClient({
 ReactDOM.render(
 	<ApolloProvider client={client}>
 		<React.StrictMode>
+			<CssBaseline />
 			<AppRouter />
 		</React.StrictMode>
 	</ApolloProvider>,

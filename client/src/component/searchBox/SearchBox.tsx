@@ -1,16 +1,18 @@
 import React, { FC, useState, useEffect } from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
-import { Button } from '@material-ui/core';
+import { Button, Card, CardContent } from '@material-ui/core';
 import DropdownSelectCity from '../dropdownSelectCity/DropdownSelectCity';
 import NumberOfNightsDropdown from '../numberOfNightsDropdown/NumberOfNightsDropdown';
 import axios from 'axios';
-import { Redirect, useHistory } from 'react-router-dom';
-import { DestinationsConfig } from '../flightsTable/interfaces/DestinationsConfig';
-import { SearchData } from './interfaces/SearchData';
+import {  useHistory } from 'react-router-dom';
+import { SearchInfo } from './interfaces/SearchData';
+import { SearchBoxProps } from './SearchBoxProps';
 
-const SearchBox: FC<SearchData> = ({ origin, destination1, destination2, destination3, destination4, nights }) => {
+import useStyles from "./SearchBoxStyles"
+
+const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 	const [ error, setError ] = useState<any[]>();
-	const [ formData, setFormData ] = useState<SearchData>({
+	const [ formData, setFormData ] = useState<SearchInfo>({
 		origin: '',
 		destination1: '',
 		destination2: '',
@@ -19,28 +21,23 @@ const SearchBox: FC<SearchData> = ({ origin, destination1, destination2, destina
 		nights: '1'
 	});
 
-	console.log(formData)
+	const classes = useStyles()
+
 
 	useEffect(
 		() => {
-			if (origin && destination1) {
+			if (searchInfo) {
 				setFormData({
-					origin,
-					destination1,
-					destination2,
-					destination3,
-					destination4,
-					nights
+					...searchInfo
 				})
 			}
 		},
-		[origin, destination1 ]
+		[searchInfo ]
 	);
 
 	const { push } = useHistory();
 
 	const handleInputChange = (e: any) => {
-		console.log(e.target.name, e.target.value);
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value
@@ -73,7 +70,7 @@ const SearchBox: FC<SearchData> = ({ origin, destination1, destination2, destina
 				nights: nights
 			})
 			.then((response) => {
-				if(origin && destination1){
+				if(origin && destination1 && nights){
 					push({
 						pathname: '/search',
 						search: resolveUrl(origin, [ destination1, destination2, destination3, destination4 ], nights),
@@ -86,14 +83,15 @@ const SearchBox: FC<SearchData> = ({ origin, destination1, destination2, destina
 	};
 
 	return (
-		<ValidatorForm onSubmit={handleSubmit} onError={(err) => setError(err)}>
+		<Card className={classes.cardRoot}>
+		<ValidatorForm onSubmit={handleSubmit} onError={(err) => setError(err)} className={classes.root}>
 			<DropdownSelectCity
 				handleInputChange={handleInputChange}
 				name="origin"
 				label="origin"
 				value={formData.origin}
 			/>
-			<div>
+			<div className={classes.destinations}>
 				<DropdownSelectCity
 					handleInputChange={handleInputChange}
 					label="destination"
@@ -122,6 +120,8 @@ const SearchBox: FC<SearchData> = ({ origin, destination1, destination2, destina
 			<NumberOfNightsDropdown quantity={formData.nights} onChange={handleInputChange} />
 			<Button type="submit">Submit</Button>
 		</ValidatorForm>
+
+		</Card>
 	);
 };
 

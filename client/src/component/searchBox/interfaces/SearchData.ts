@@ -1,5 +1,4 @@
-
-export interface SearchData {
+export interface SearchInfo {
     origin?: string | null;
     destination1?: string | null
     destination2?: string | null
@@ -7,3 +6,4 @@ export interface SearchData {
     destination4?: string | null
     nights?: string | null;
 }
+

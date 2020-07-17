@@ -1,0 +1,22 @@
+html,
+body {
+	height: 100%;
+}
+
+.tabulator {
+	.tabulator-col-title {
+		text-align: 'center';
+	}
+}
+
+.cheap {
+	background-color: lightgreen;
+}
+
+.expensive {
+	background-color: lightsalmon;
+}
+
+.normal {
+	background-color: lightblue;
+}

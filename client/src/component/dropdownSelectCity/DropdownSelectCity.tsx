@@ -12,7 +12,16 @@ const DropdownSelectCity: FC<DropdownSelectCityProps> = ({ label, handleInputCha
 	const { data } = useQuery(citiesQueries.Cities);
 
 	return (
-		<TextField className={classes.root} select name={name} label={label} value={value} onChange={handleInputChange}>
+		<TextField
+			variant="outlined"
+			className={classes.root}
+			size="small"
+			select
+			name={name}
+			label={label}
+			value={value}
+			onChange={handleInputChange}
+		>
 			<MenuItem value="">
 				<em>None</em>
 			</MenuItem>

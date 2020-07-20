@@ -1,14 +1,18 @@
 import React, { FC } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import useStyles from './HeaderNavigationStyles';
 
 const HeaderNavigation: FC = () => {
+	const classes = useStyles();
+
 	return (
 		<div>
-			<AppBar position="static">
+			<AppBar position="static" className={classes.root}>
 				<Toolbar>
-					<IconButton edge="start" color="inherit" aria-label="menu" />
-					<Typography variant="h6">News</Typography>
-					<Button color="inherit">Login</Button>
+					<Link to="/" className={classes.link}>
+						<Typography variant="h6">Home</Typography>
+					</Link>
 				</Toolbar>
 			</AppBar>
 		</div>

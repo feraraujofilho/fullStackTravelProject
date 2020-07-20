@@ -1,17 +1,22 @@
 import React, { FC } from 'react';
 import SearchBox from '../../../component/searchBox/SearchBox';
-import HeaderNavigation from '../../header/HeaderNavigation';
-import { Card, CardContent } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import useStyles from './HomeContentStyles';
 
 const HomeContent: FC = () => {
+	const classes = useStyles();
 	return (
-		<div>
-			<HeaderNavigation />
-			<Card>
-				<CardContent>
-					<SearchBox />
-				</CardContent>
-			</Card>
+		<div className={classes.root}>
+			<div className={classes.header}>
+				<Typography variant="h2" component="h1">
+					Compare Your Next Destinations
+				</Typography>
+				<Typography>
+					Compare side by side a roundtrip to up to 4 destinations for all possible dates in the next 6 months
+				</Typography>
+
+				<SearchBox />
+			</div>
 		</div>
 	);
 };

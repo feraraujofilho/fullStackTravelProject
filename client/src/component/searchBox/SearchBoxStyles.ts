@@ -4,7 +4,11 @@ export default makeStyles({
         margin: "auto",
         width: "800px",
         '@media only screen and (max-width: 768px)': {
-            width: "350px"
+            width: "350px",
+            minHeight: "500px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center"
         },
         marginTop: "50px",
         marginBottom: "30px",
@@ -16,7 +20,8 @@ export default makeStyles({
         justifyContent: "center",
         alignItems: "center",
         '@media only screen and (max-width: 768px)': {
-            flexDirection: "column"
+            flexDirection: "column",
+            justifyContent: "space-between"
         }
     },
     destinations: {

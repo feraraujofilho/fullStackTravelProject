@@ -16,5 +16,6 @@ export default makeStyles({
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
+        textAlign: "center"
     }
 })

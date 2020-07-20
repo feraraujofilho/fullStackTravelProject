@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 
 import useStyles from './SearchBoxStyles';
+import { get } from 'lodash';
 
 const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 	const [ error, setError ] = useState<any[]>();
@@ -31,6 +32,11 @@ const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 				setFormData({
 					...searchInfo
 				});
+				let predefinedDestinations = Object.keys(searchInfo).filter((el: string) => {
+					const getValue = get(searchInfo, el, null);
+					return el.includes('destination') && getValue?.length > 0
+				});
+				setNumberOfInputToShow(predefinedDestinations.length)
 			}
 		},
 		[ searchInfo ]

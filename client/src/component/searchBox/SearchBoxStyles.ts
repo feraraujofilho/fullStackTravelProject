@@ -2,33 +2,16 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles({
     cardRoot: {
         margin: "auto",
-        width: "800px",
+        width: "600px",
+        padding: "20px",
         '@media only screen and (max-width: 768px)': {
-            width: "350px",
-            minHeight: "500px",
-            display: "flex",
+            width: "280px",
+            minHeight: "200px",
             flexDirection: "column",
-            justifyContent: "center"
         },
         marginTop: "50px",
         marginBottom: "30px",
         border: "#4BA0B4 solid",
-        borderRadius: "20px",
-    },
-    root: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        '@media only screen and (max-width: 768px)': {
-            flexDirection: "column",
-            justifyContent: "space-between"
-        }
-    },
-    destinations: {
-        display: "flex",
-        flexDirection: "column",
-        margin: "20px",
-        padding: "20px"
     },
     actions: {
         display: "flex",
@@ -37,11 +20,13 @@ export default makeStyles({
             color: "#4BA0B4"
         }
     },
-    nightAndSubmitContainer: {
+    originAndNights: {
         display: "flex",
-        flexDirection: "column"
+        marginBottom: "20px",
+        alignItems: "center"
     },
     submitButton: {
+        marginTop: "10px",
         backgroundColor: "#4BA0B4",
         color: "white",
         '&:hover': {

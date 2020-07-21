@@ -53,7 +53,9 @@ const FlightsTable: FC<FlightsTableProps> = ({ data, destinations }) => {
 				options={{
 					...{
 						invalidOptionWarnings: false,
-						autoResize: true
+						autoResize: true,
+						pagination: "local",
+						paginationSize: 30,
 					}
 				}}
 			/>

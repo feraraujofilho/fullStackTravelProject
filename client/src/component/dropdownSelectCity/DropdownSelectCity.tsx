@@ -21,18 +21,25 @@ const DropdownSelectCity: FC<DropdownSelectCityProps> = ({ label, handleInputCha
 			label={label}
 			value={value}
 			onChange={handleInputChange}
+			fullWidth
 		>
 			<MenuItem value="">
 				<em>None</em>
 			</MenuItem>
-			{data &&
+			{name === 'origin' ? (
+				<MenuItem value={'Berlin (alle)'} key={'Berlin (alle)'}>
+					Berlin (alle)
+				</MenuItem>
+			) : (
+				data &&
 				data.cities.map((city: City) => {
 					return (
 						<MenuItem value={city.name} key={city.name}>
 							{city.name}
 						</MenuItem>
 					);
-				})}
+				})
+			)}
 		</TextField>
 	);
 };

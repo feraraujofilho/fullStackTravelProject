@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core'
 
 export default makeStyles({
     root: {
-        width: '200px',
+        width: "200px",
         '& .MuiOutlinedInput-root': {
             marginBottom: "10px",
             borderRadius: "20px",

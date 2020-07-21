@@ -1,6 +1,7 @@
 html,
 body {
 	height: 100vh;
+	border: 0;
 }
 
 .tabulator {
@@ -16,13 +17,17 @@ body {
 }
 
 .cheap {
-	background-color: lightgreen;
+	background-color: rgb(158, 226, 158);
 }
 
 .expensive {
-	background-color: lightsalmon;
+	background-color: rgb(245, 194, 175);
 }
 
 .normal {
-	background-color: lightblue;
+	background-color: RGB(192, 227, 235);
+}
+
+table {
+	border-collapse: collapse;
 }

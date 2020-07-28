@@ -1,6 +1,6 @@
 html,
 body {
-	height: 100vh;
+	height: 100%;
 	border: 0;
 }
 
@@ -16,18 +16,19 @@ body {
 	box-shadow: 0px 0px 41px -7px rgba(0, 0, 0, 0.35);
 }
 
-.cheap {
-	background-color: rgb(158, 226, 158);
-}
-
-.expensive {
-	background-color: rgb(245, 194, 175);
-}
-
-.normal {
-	background-color: RGB(192, 227, 235);
-}
-
 table {
-	border-collapse: collapse;
+	max-width: 800px;
+	margin: auto;
+}
+
+th {
+	padding: 5px;
+	position: sticky;
+	top: 0;
+	background-color: white;
+}
+
+td {
+	padding: 10px;
+	text-align: center
 }

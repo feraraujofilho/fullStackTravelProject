@@ -7,19 +7,26 @@ import AppRouter from './app/routing/AppRouter';
 import "./app/themes/style.scss"
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import theme from './app/themes/baseMuiTheme';
+
 
 const client = new ApolloClient({
-	uri: 'http://localhost:4000/graphql',
+	uri: `${process.env.REACT_APP_BACKEND_URL}/graphql`,
 	cache: new InMemoryCache()
 });
 
+
 ReactDOM.render(
 	<ApolloProvider client={client}>
-		<React.StrictMode>
-			<CssBaseline />
-			<AppRouter />
-		</React.StrictMode>
+		<ThemeProvider theme={theme}>
+			<React.StrictMode>
+				<CssBaseline />
+				<AppRouter />
+			</React.StrictMode>
+		</ThemeProvider>
+
+
 	</ApolloProvider>,
 	document.getElementById('root')
 );

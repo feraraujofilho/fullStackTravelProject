@@ -31,15 +31,15 @@ const DropdownSelectCity: FC<DropdownSelectCityProps> = ({ label, handleInputCha
 					Berlin (alle)
 				</MenuItem>
 			) : (
-				data &&
-				data.cities.map((city: City) => {
-					return (
-						<MenuItem value={city.name} key={city.name}>
-							{city.name}
-						</MenuItem>
-					);
-				})
-			)}
+					data &&
+					data.cities.map((city: City) => {
+						return (
+							<MenuItem value={city.name} key={city.name}>
+								{city.name}
+							</MenuItem>
+						);
+					})
+				)}
 		</TextField>
 	);
 };

@@ -1,19 +1,20 @@
 import React, { FC, useState, useEffect, ReactElement } from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator';
-import { Button, Card, Grid } from '@material-ui/core';
+import { Button, Card, Grid, Link } from '@material-ui/core';
 import DropdownSelectCity from '../dropdownSelectCity/DropdownSelectCity';
 import NumberOfNightsDropdown from '../numberOfNightsDropdown/NumberOfNightsDropdown';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { SearchBoxProps } from './SearchBoxProps';
 import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
 
 import useStyles from './SearchBoxStyles';
 import { get } from 'lodash';
+import MultipleSelectionFilter from '../multipleSelectionFilter/MultipleSelectionFilter';
+import { weekdays } from '../../app/services/filters';
+import { Row } from '../../app/types/Row';
 
-const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
-	const [error, setError] = useState<any[]>();
+const SearchBox: FC<SearchBoxProps> = ({ searchInfo, weekdaysFilter, setWeekdaysFilter }) => {
 	const [formData, setFormData] = useState<any>({
 		origin: '',
 		destination1: '',
@@ -22,6 +23,8 @@ const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 		destination4: '',
 		nights: '1'
 	});
+	const [showFilters, setShowFilters] = useState<boolean>(false)
+
 	const [numberOfInputToShow, setNumberOfInputToShow] = useState(1);
 
 	const classes = useStyles();
@@ -51,6 +54,10 @@ const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 		});
 	};
 
+	const handleChangeFilter = (event: any, setStateFunction: any) => {
+		setStateFunction(event.target.value);
+	};
+
 	const resolveUrl = (origin: string | null, destinations: (string | null | undefined)[], nights?: string | null) => {
 		let url = `?origin=${origin}`;
 
@@ -68,7 +75,7 @@ const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 		const { origin, destination1, destination2, destination3, destination4, nights } = formData;
 
 		axios
-			.post('http://localhost:4000/flights', {
+			.post(`${process.env.REACT_APP_BACKEND_URL}/flights`, {
 				origin: origin,
 				destination1: destination1,
 				destination2: destination2,
@@ -77,11 +84,21 @@ const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 				nights: nights
 			})
 			.then((response) => {
+				let dataForFrontend = response.data
+				if (weekdaysFilter.length > 0) {
+					const dataFilteredByWeekDays = dataForFrontend.filter((val: Row) => {
+						let valueArray = val.departuredate.split(" - ")
+						if (weekdaysFilter.indexOf(valueArray[0]) > -1) {
+							return val
+						}
+					})
+					dataForFrontend = dataFilteredByWeekDays
+				}
 				if (origin && destination1 && nights) {
 					push({
 						pathname: '/search',
 						search: resolveUrl(origin, [destination1, destination2, destination3, destination4], nights),
-						state: { data: response.data }
+						state: { data: dataForFrontend, filters: weekdaysFilter }
 					});
 				}
 			})
@@ -98,6 +115,7 @@ const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 					label="To"
 					name={`destination${i + 1}`}
 					value={formData[`destination${i + 1}`]}
+					key={i}
 				/>
 			);
 		}
@@ -111,54 +129,57 @@ const SearchBox: FC<SearchBoxProps> = ({ searchInfo }) => {
 
 	return (
 		<Card elevation={10} className={classes.cardRoot}>
-			<ValidatorForm onSubmit={handleSubmit} onError={(err) => setError(err)}>
+			<ValidatorForm onSubmit={handleSubmit}>
 				<Grid container>
-					<Grid item xs={12} sm={12} md={6} direction="column" className={classes.originAndNights}>
-						<Grid item xs={12}>
-							<DropdownSelectCity
-								handleInputChange={handleInputChange}
-								name="origin"
-								label="From"
-								value={formData.origin}
-							/>
+					<Grid container className={classes.citiesAndDuration}>
+						<Grid item xs={12} sm={12} md={6} direction="column" className={classes.originAndNights}>
+							<Grid item xs={12}>
+								<DropdownSelectCity
+									handleInputChange={handleInputChange}
+									name="origin"
+									label="From"
+									value={formData.origin}
+								/>
+							</Grid>
+							<Grid item sm={10}>
+								<NumberOfNightsDropdown quantity={formData.nights} onChange={handleInputChange} />
+							</Grid>
 						</Grid>
-						<Grid item sm={10}>
-							<NumberOfNightsDropdown quantity={formData.nights} onChange={handleInputChange} />
-						</Grid>
-					</Grid>
-					<Grid item xs={12} sm={12} md={6} direction="column">
-						{renderDestinations()}
-						<Grid item xs={12}>
-							<div className={classes.actions}>
-								{/* {numberOfInputToShow > 1 && (
-									<Button
-										onClick={() => {
-											setNumberOfInputToShow(numberOfInputToShow - 1);
-										}}
-									>
-										<RemoveIcon />
-									</Button>
-								)} */}
-								{numberOfInputToShow < 4 && (
-									<Button
-										onClick={() => {
-											setNumberOfInputToShow(numberOfInputToShow + 1);
-										}}
-									>
-										<AddIcon />
-									</Button>
-								)}
-							</div>
+						<Grid item xs={12} sm={12} md={6} direction="column">
+							{renderDestinations()}
+							<Grid item xs={12}>
+								<div className={classes.plusButton}>
+									{numberOfInputToShow < 4 && (
+										<Button
+											onClick={() => {
+												setNumberOfInputToShow(numberOfInputToShow + 1);
+											}}
+										>
+											<AddIcon />
+										</Button>
+									)}
+								</div>
+							</Grid>
 						</Grid>
 					</Grid>
-					<Grid container item xs={12}>
-						<Button fullWidth className={classes.submitButton} type="submit">
-							Search
+
+					{showFilters && <MultipleSelectionFilter options={weekdays} value={weekdaysFilter} handleChange={(event) => handleChangeFilter(event, setWeekdaysFilter)} label="Departure Weekday" />}
+					<Grid container xs={12} className={classes.actions}>
+						<Grid item xs={6}>
+							<Link className={classes.textLink} onClick={() => setShowFilters(!showFilters)}>
+								<p>Advanced Search</p>
+							</Link>
+						</Grid>
+						<Grid item xs={6}>
+							<Button fullWidth className={classes.submitButton} type="submit">
+								Search
 						</Button>
+						</Grid>
+
 					</Grid>
 				</Grid>
 			</ValidatorForm>
-		</Card>
+		</Card >
 	);
 };
 

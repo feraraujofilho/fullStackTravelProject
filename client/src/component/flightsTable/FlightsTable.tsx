@@ -1,17 +1,19 @@
-import React, { FC } from 'react';
-import { ReactTabulator, reactFormatter } from 'react-tabulator';
-import 'react-tabulator/lib/css/bootstrap/tabulator_bootstrap.min.css';
+import React, { FC, ReactElement } from 'react';
 import { FlightsTableProps } from './FlightsTableProps';
 import useStyles from './FlightsTableStyles';
-import PriceFormatter from '../../app/services/tabulator/PriceFormatter';
 import useUrlSearchParams from '../../app/hooks/useUrlSearchParams';
 import { useQuery } from '@apollo/client';
 import queries from '../../app/services/tabulator/apollo/queries';
+import { Card } from '@material-ui/core';
+import { convertDateIntoRightFormat } from '../../app/utils/helpers';
+import PriceTag from '../priceTag/PriceTag';
+
 
 const FlightsTable: FC<FlightsTableProps> = ({ data, destinations }) => {
 	const query = useUrlSearchParams();
 	const origin = query.get('origin');
 	const { destination1, destination2, destination3, destination4 } = destinations;
+	const destinationNamesArray = Object.values(destinations)
 
 	const { data: citiesAbb } = useQuery(queries.OriginAndDestinations, {
 		variables: { origin, destination1, destination2, destination3, destination4 },
@@ -21,45 +23,46 @@ const FlightsTable: FC<FlightsTableProps> = ({ data, destinations }) => {
 		let element = data?.originAndDestinations.find((city: any) => city.name === value);
 		return element?.abb
 	};
+	const originAbb = getAbbFromName(origin, citiesAbb)
 
 	const classes = useStyles();
 
-	const handleColumns = () => {
-		const originAbb = getAbbFromName(origin, citiesAbb)
-			return Object.values(destinations).reduce(
-			(accumulator: any[], value: string, index: number) => {
-				const destinationAbb = getAbbFromName(value, citiesAbb);
-				if (value) {
-					accumulator.push({
-						title: value,
-						field: index.toString(),
-						formatter: reactFormatter(<PriceFormatter originAbb={originAbb} destinationAbb={destinationAbb} />),
-						sorterParams: { alignEmptyValues: 'bottom' }
-					});
-				}
-				return accumulator;
-			},
-			[ { title: 'Date', field: 'date', width: 200 } ]
-		)
-	};
+	const renderCellPrices = (el: any): ReactElement[] => {
+		const { departuredate, returndate } = el
+		const date = convertDateIntoRightFormat(departuredate, returndate)
+		let cells = []
+		for (let i = 0; i < 4; i++) {
+			if (el[i]) {
+				cells.push(<td><PriceTag key={i} columnValuesArray={data.map(el => el[i])} el={el[i]} originAbb={originAbb} destinationAbb={getAbbFromName(destinationNamesArray[i], citiesAbb)} date={date} /></td>)
+			}
+		}
+		return cells
+	}
 
 	return (
-		<div>
-			<ReactTabulator
-				className={classes.table}
-				columns={handleColumns()}
-				data={data}
-				layout={'fitColumns'}
-				options={{
-					...{
-						invalidOptionWarnings: false,
-						autoResize: true,
-						pagination: "local",
-						paginationSize: 30,
-					}
-				}}
-			/>
-		</div>
+		<Card className={classes.cardTable}>
+			<table>
+				<thead>
+					<tr>
+						<th style={{ margin: "10px" }}>Departure</th>
+						<th>Return</th>
+						{destinationNamesArray.map((destination, index) => {
+							return <th key={`${destination}${index}`}>{destination}</th>
+						})}
+					</tr>
+
+				</thead>
+				<tbody>
+					{data && data.map(el => {
+						return <tr key={el.departuredate}>
+							<td style={{ textAlign: "center" }}>{el.departuredate}</td>
+							<td>{el.returndate}</td>
+							{renderCellPrices(el)}
+						</tr>
+					})}
+				</tbody>
+			</table>
+		</Card >
 	);
 };
 
